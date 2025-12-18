@@ -7,7 +7,7 @@ This project is an IoT solution designed to monitor reservoir water levels in re
 ## 📸 System Architecture
 | **Transmitter Unit (Reservoir)** | **Receiver Unit (Monitoring Post)** |
 |:--------------------------------:|:-----------------------------------:|
-| <img src="Hardware/Transmitter.jpg" height="250"> | <img src="Hardware/Receiver.jpg" height="250"> |
+| <img src="Hardware/Transmitter.jpeg" height="250"> | <img src="Hardware/Receiver.jpeg" height="250"> |
 | *Reads sensor & controls servo* | *Receives LoRa packet & pushes to MQTT* |
 
 
