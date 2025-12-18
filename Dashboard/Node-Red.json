@@ -1,0 +1,218 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "LoRa Flood Monitor",
+        "disabled": false,
+        "info": "Dashboard for LoRa Water Level Monitoring System"
+    },
+    {
+        "id": "mqtt_in_node",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "Receiver ESP32",
+        "topic": "esp32/workshop/data",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "hivemq_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 150,
+        "y": 120,
+        "wires": [
+            [
+                "debug_node",
+                "ui_gauge_level",
+                "ui_chart_history",
+                "ui_text_rssi",
+                "check_threshold"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_level",
+        "type": "ui_gauge",
+        "z": "f6f2187d.f17ca8",
+        "name": "Water Level (%)",
+        "group": "dashboard_group",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Water Level",
+        "label": "%",
+        "format": "{{msg.payload.level}}",
+        "min": 0,
+        "max": 100,
+        "colors": ["#00b500", "#e6e600", "#ca3838"],
+        "seg1": "60",
+        "seg2": "85",
+        "x": 420,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "ui_chart_history",
+        "type": "ui_chart",
+        "z": "f6f2187d.f17ca8",
+        "name": "Level History",
+        "group": "dashboard_group",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "Water Level History",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": ["#1f77b4", "#aec7e8", "#ff7f0e", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5"],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "x": 410,
+        "y": 200,
+        "wires": [[]]
+    },
+    {
+        "id": "ui_text_rssi",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "dashboard_group",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "Signal Strength",
+        "label": "LoRa Signal (RSSI)",
+        "format": "{{msg.payload.rssi}} dBm",
+        "layout": "row-spread",
+        "x": 420,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "check_threshold",
+        "type": "switch",
+        "z": "f6f2187d.f17ca8",
+        "name": "Level > 85%?",
+        "property": "payload.level",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "85",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 380,
+        "wires": [
+            [
+                "email_format"
+            ]
+        ]
+    },
+    {
+        "id": "email_format",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Format Email Alert",
+        "func": "msg.topic = 'PERINGATAN BAHAYA BANJIR!';\nmsg.payload = 'Peringatan! Ketinggian air waduk telah mencapai ' + msg.payload.level + '% (Bahaya).\\n\\nKekuatan Sinyal Gateway: ' + msg.payload.rssi + ' dBm.\\n\\nSegera lakukan tindakan pencegahan.';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 380,
+        "wires": [
+            [
+                "email_sender_node"
+            ]
+        ]
+    },
+    {
+        "id": "email_sender_node",
+        "type": "e-mail",
+        "z": "f6f2187d.f17ca8",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "Send Alert",
+        "dname": "Send Email Alert",
+        "x": 800,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "debug_node",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "Debug Data",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "hivemq_broker",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Public",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "dashboard_group",
+        "type": "ui_group",
+        "name": "Reservoir Status",
+        "tab": "dashboard_tab",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "dashboard_tab",
+        "type": "ui_tab",
+        "name": "Water Monitor",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
