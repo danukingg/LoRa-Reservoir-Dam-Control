@@ -13,7 +13,7 @@ The system addresses the limitations of manual monitoring by providing a robust,
 
 | **Transmitter Unit (Reservoir)** | **Receiver Unit (Monitoring Post)** |
 |:--------------------------------:|:-----------------------------------:|
-| <img src="hardware/Transmitter.jpeg" height="250" alt="Transmitter Wiring"> | <img src="hardware/Receiver.jpeg" height="250" alt="Receiver Wiring"> |
+| <img src="Hardware/Transmitter.jpeg" height="250" alt="Transmitter Wiring"> | <img src="Hardware/Receiver.jpeg" height="250" alt="Receiver Wiring"> |
 | *Reads sensor & controls servo* | *Receives LoRa packet & pushes to MQTT* |
 
 ## 🛠️ Tech Stack & Components
