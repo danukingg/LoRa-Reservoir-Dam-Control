@@ -2,7 +2,7 @@
 
 This project is an IoT solution designed to monitor reservoir water levels in real-time and automatically control floodgates using **Long Range (LoRa)** communication technology.
 
-[cite_start]The system addresses the limitations of manual monitoring by providing a robust, low-power telemetry system capable of transmitting data up to **5 km** (Line of Sight) and integrating with **Node-RED** for dashboard monitoring and email alerts[cite: 425, 475].
+The system addresses the limitations of manual monitoring by providing a robust, low-power telemetry system capable of transmitting data up to **5 km** (Line of Sight) and integrating with **Node-RED** for dashboard monitoring and email alerts.
 
 ## 📸 System Architecture
 | **Transmitter Unit (Reservoir)** | **Receiver Unit (Monitoring Post)** |
@@ -12,7 +12,7 @@ This project is an IoT solution designed to monitor reservoir water levels in re
 
 
 ## 🛠️ Tech Stack & Components
-[cite_start]Based on the implementation design[cite: 361, 442]:
+Based on the implementation design:
 
 | Category | Component / Technology | Function |
 | :--- | :--- | :--- |
@@ -27,20 +27,20 @@ This project is an IoT solution designed to monitor reservoir water levels in re
 
 ### 1. Transmitter Unit (At the Reservoir)
 * Reads the water level percentage (0-100%).
-* [cite_start]**Automatic Control:** If the water level exceeds **85%** (Danger Threshold), the system automatically opens the sluice gate (Servo moves to 90°) to release water[cite: 363, 472].
+* **Automatic Control:** If the water level exceeds **85%** (Danger Threshold), the system automatically opens the sluice gate (Servo moves to 90°) to release water.
 * Encodes data into **JSON** format and transmits it via LoRa.
 
 ### 2. Receiver Unit (Monitoring Station)
 * Receives the LoRa packet via radio frequency.
-* [cite_start]Connects to Wi-Fi and publishes the payload to an **MQTT Broker** (HiveMQ)[cite: 426].
+* Connects to Wi-Fi and publishes the payload to an **MQTT Broker** (HiveMQ).
 
 ### 3. Node-RED Dashboard
 * Subscribes to the MQTT topic `esp32/workshop/data`.
 * Parses the JSON data.
-* [cite_start]**Alert System:** If the water level is critical (>85%), it triggers an **Email Notification** to the administrator containing the water level and RSSI signal strength[cite: 479].
+* **Alert System:** If the water level is critical (>85%), it triggers an **Email Notification** to the administrator containing the water level and RSSI signal strength.
 
 ## 📊 Performance Test Results
-[cite_start]Field testing yielded the following results[cite: 500, 501]:
+Field testing yielded the following results:
 
 | Distance | Water Level | Data Transmission | Servo Response |
 | :--- | :--- | :--- | :--- |
